@@ -1,0 +1,75 @@
+version: "3.8"
+
+services:
+  job-agent:
+    build: .
+    container_name: kevin-job-agent
+    environment:
+      - POSTGRES_HOST=ai-agent-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=job_agent
+      - REDIS_HOST=ai-agent-redis
+      - REDIS_PORT=6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=${OPENAI_BASE_URL:-https://api.openai.com/v1}
+    volumes:
+      - ai-agent-data-dev:/app/data
+    networks:
+      - ai-agent-network
+    command: python -m src.main
+    depends_on:
+      - redis
+      - postgres
+
+  celery-worker:
+    build: .
+    container_name: kevin-job-worker
+    environment:
+      - POSTGRES_HOST=ai-agent-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=job_agent
+      - REDIS_HOST=ai-agent-redis
+      - REDIS_PORT=6379
+    volumes:
+      - ai-agent-data-dev:/app/data
+    networks:
+      - ai-agent-network
+    command: celery -A src.worker worker --loglevel=info
+    depends_on:
+      - redis
+      - postgres
+
+  redis:
+    image: redis:7-alpine
+    container_name: kevin-job-redis
+    ports:
+      - "6380:6379"
+    networks:
+      - ai-agent-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: kevin-job-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=job_agent
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - ai-agent-network
+
+volumes:
+  ai-agent-data-dev:
+    external: true
+  pgdata:
+
+networks:
+  ai-agent-network:
+    external: true

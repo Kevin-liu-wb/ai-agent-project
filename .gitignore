@@ -1,0 +1,21 @@
+# 本地模型文件（大文件，不提交）
+/models/
+
+# 环境变量（可能含密钥）
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo

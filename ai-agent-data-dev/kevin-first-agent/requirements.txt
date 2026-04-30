@@ -1,0 +1,34 @@
+# ===================== 核心依赖 =====================
+langchain
+langchain-core
+langchain-community
+langgraph
+
+# OpenAI 兼容接口
+langchain-openai
+openai
+
+# ===================== 数据层 =====================
+redis
+psycopg2-binary
+pgvector
+sqlalchemy
+alembic
+
+# ===================== Web 抓取 =====================
+requests
+beautifulsoup4
+lxml
+selenium
+webdriver-manager
+
+# ===================== 开发/工具 =====================
+ipython
+python-dotenv
+pydantic
+schedule
+celery
+
+# ===================== API 服务 =====================
+fastapi
+uvicorn

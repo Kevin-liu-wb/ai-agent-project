@@ -1,0 +1,26 @@
+-i https://pypi.tuna.tsinghua.edu.cn/simple
+# ===================== 核心依赖 =====================
+# LangChain全家桶（多Agent/RAG基础）
+langchain
+langchain-core
+langchain-community
+langgraph
+# vLLM对接（OpenAI兼容接口）
+langchain-openai
+openai
+# ===================== 数据层 =====================
+# 缓存（会话/请求缓存）
+redis
+# PostgreSQL驱动（基础+向量存储）
+psycopg2-binary
+pgvector
+# ===================== 开发/工具 =====================
+# 交互式调试（开发环境友好）
+ipython
+# HTTP请求（调用Dify/vLLM API）
+requests
+# ===================== Dify集成 =====================
+# Dify Python SDK（开发环境调用Dify）
+dify-client
+# 环境变量管理（加载.env中的HF_TOKEN/Dify API Key）
+python-dotenv
