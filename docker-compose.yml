@@ -1,5 +1,7 @@
 networks:
   ai-agent-network:
+  ai-agent-shared:
+    external: true
 volumes:
   ai-agent-data-vllm:
   ai-agent-data-dev:
@@ -181,6 +183,7 @@ services:
     working_dir: /app
     networks:
       - ai-agent-network
+      - ai-agent-shared
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
