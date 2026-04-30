@@ -8,7 +8,6 @@ volumes:
   ai-agent-data-postgres:
   ai-agent-data-dify:
   ai-agent-data-dify-uploads:
-  mcp-jobs-playwright-data:
 services:
   # --------------------------
   # PostgreSQL（带pgvector，基础+向量存储）
@@ -197,46 +196,3 @@ services:
       - redis
       - postgres
       - dify-api
-
-  # --------------------------
-  # MCP: mcp-jobs (职位聚合服务)
-  # --------------------------
-  mcp-jobs:
-    image: node:20-slim
-    container_name: mcp-jobs
-    restart: always
-    environment:
-      - DEBIAN_FRONTEND=noninteractive
-      - TERM=dumb
-    command: >
-      sh -c "
-      npm install -g mcp-jobs &&
-      npx playwright install chromium &&
-      exec node /usr/local/lib/node_modules/mcp-jobs/dist/mcp.js
-      "
-    ports:
-      - "8010:3000"
-    networks:
-      - ai-agent-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - mcp-jobs-playwright-data:/root/.cache/ms-playwright
-
-
-  # --------------------------
-  # MCP: JobSeek (AI 求职自动化服务)
-  # --------------------------
-  jobseek-mcp:
-    image: node:20-slim
-    container_name: jobseek-mcp
-    restart: always
-    command: npx -y jobseek-mcp
-    ports:
-      - "8011:3000"
-    networks:
-      - ai-agent-network
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - JOBSEEK_API_KEY=sk_live_vIjkk5VH0AFFtPA0WTfimwnhqww8zK_1
